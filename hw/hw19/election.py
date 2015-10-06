@@ -34,7 +34,12 @@ def state_edges(election_result_rows):
     The input list has no duplicate *States*;
     that is, each *State* is represented at most once in the input list.
     """
-    pass
+    result = {}
+    for row in election_result_rows:
+        state = row['State']
+        edge = row_to_edge(row)
+        result[state] = edge
+    return result
 
 ################################################################################
 # Problem 2: Find the most recent poll row
@@ -53,8 +58,16 @@ def most_recent_poll_row(poll_rows, pollster, state):
     specified *Pollster* and *State*. If no such row exists, returns None.
     """
     #TODO: Implement this function
-    pass
-
+    
+    most_recent = None
+    for row in poll_rows:
+        if (row['Pollster'] == pollster and row['State'] == state):
+            if (most_recent is None):
+                most_recent = row
+            else:
+                if(earlier_date(most_recent['Date'], row['Date'])):
+                    most_recent = row
+    return most_recent
 
 ################################################################################
 # Problem 3: Pollster predictions

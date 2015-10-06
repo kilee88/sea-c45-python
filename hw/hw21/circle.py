@@ -7,4 +7,10 @@ import math
 
 
 class Circle(object):
-    pass
+    def __init__(self, radius):
+        """
+        Initialize a circle with a given radius
+        """
+        self.radius = radius
+        self.diameter = 2 * radius
+        self.area = math.pi * radius ** 2
