@@ -23,13 +23,13 @@ class Element(object):
             f.write("<!DOCTYPE html>")
         spaces = "    "
         ind = spaces * n
+        n2 = n + 1
+        ind2 = spaces * n2
         f.write("\n{ind}<{name}>".format(ind=ind, name=self.name))
         for child in self.children:
             if (type(child) != str):
                 child.render(f, n + 1)
             else:
-                n = n + 1
-                ind2 = spaces * n
                 f.write("\n{ind}{child}".format(ind=ind2, child=child))
         f.write("\n{ind}</{name}>".format(ind=ind, name=self.name))
 
