@@ -18,11 +18,20 @@ class Element(object):
     def append(self, child):
         self.children.append(child)
 
-    def render(self, f):
-        f.write("\n<{name}>".format(name=self.name))
+    def render(self, f, n=0):
+        if(type(self) == Html):
+            f.write("<!DOCTYPE html>")
+        spaces = "    "
+        ind = spaces * n
+        f.write("\n{ind}<{name}>".format(ind=ind, name=self.name))
         for child in self.children:
-            child.render(f)
-        f.write("\n</{name}>".format(name=self.name))
+            if (type(child) != str):
+                child.render(f, n + 1)
+            else:
+                n = n + 1
+                ind2 = spaces * n
+                f.write("\n{ind}{child}".format(ind=ind2, child=child))
+        f.write("\n{ind}</{name}>".format(ind=ind, name=self.name))
 
 
 class Html(Element):
@@ -38,5 +47,22 @@ class Body(Element):
 class P(Element):
     def __init__(self, content):
         super(P, self).__init__(name="p")
-        #self.content = content
         self.append(content)
+
+
+class Title(Element):
+    def __init__(self, content):
+        super(Title, self).__init__(name="title")
+        self.append(content)
+
+    def render(self, f, n=0):
+        spaces = "    "
+        ind = spaces * n
+        content = self.children[0]
+        f.write("\n{ind}<title>{content}</title>".format(ind=ind,
+                                                         content=content))
+
+
+class Head(Element):
+    def __init__(self):
+        super(Head, self).__init__(name="head")
